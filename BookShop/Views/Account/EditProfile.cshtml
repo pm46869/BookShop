@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center">@ViewData["Title"]</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="list-group my-4">
+                <a asp-action="ChangeUsername" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Change Username
+                    <span class="badge bg-primary rounded-pill">&raquo;</span>
+                </a>
+                <a asp-action="ChangeEmail" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Change Email
+                    <span class="badge bg-primary rounded-pill">&raquo;</span>
+                </a>
+                <a asp-action="ChangePassword" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    Change Password
+                    <span class="badge bg-primary rounded-pill">&raquo;</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .list-group-item-action:hover {
+        background-color: #f8f9fa;
+    }
+</style>

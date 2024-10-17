@@ -1,0 +1,40 @@
+﻿@model BookShop.Models.Order
+@using System.Globalization
+
+<h2>Payment Successful!</h2>
+
+<div class="alert alert-success" role="alert">
+    Your payment was successful, and your order has been placed.
+</div>
+
+<div>
+    <h4>Order ID: @Model.OrderId</h4>
+    <h4>Date: @Model.OrderDate.ToString("f")</h4>
+    <h4>Address: @Model.Address</h4>
+    <h4>Status: @Model.Status</h4>
+
+    <h5>Order Details:</h5>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@detail.Book.Title</td>
+                    <td>@detail.Price.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("de-DE"))</td>
+                    <td>@detail.Quantity</td>
+                    <td>@((detail.Price * detail.Quantity).ToString("C", System.Globalization.CultureInfo.GetCultureInfo("de-DE")))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<a asp-controller="Books" asp-action="Index" class="btn btn-primary">Continue Shopping</a>

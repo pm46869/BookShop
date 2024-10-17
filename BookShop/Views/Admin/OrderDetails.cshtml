@@ -1,0 +1,52 @@
+﻿@model BookShop.Models.Order
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h2>Order Details</h2>
+
+<div class="card mb-3">
+    <div class="card-header">
+        Order @Model.OrderId
+    </div>
+    <div class="card-body">
+        <p>Date: @Model.OrderDate.ToString("G")</p>
+        <p>Status: @Model.Status.ToString()</p>
+        <p>User: @Model.User.UserName</p>
+        <p>Address: @Model.Address</p>
+    </div>
+</div>
+
+@if (Model.OrderDetails.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Book Title</th>
+                <th>Quantity</th>
+                <th>Price per Unit</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detail in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@detail.Book.Title</td>
+                    <td>@detail.Quantity</td>
+                    <td>@detail.Price.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</td>
+                    <td>@((detail.Price * detail.Quantity).ToString("C", CultureInfo.GetCultureInfo("de-DE")))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p>This order contains no items.</p>
+}
+
+<a asp-action="ListOrders" class="btn btn-secondary">Back to Orders</a>

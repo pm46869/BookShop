@@ -1,0 +1,59 @@
+﻿@model BookShop.Models.Book
+
+@{
+    ViewData["Title"] = "Edit Book";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+
+    <form asp-action="EditBook" method="post" class="col-md-6">
+        <input type="hidden" asp-for="BookId" />
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="AuthorId" class="form-label">Author</label>
+            <select asp-for="AuthorId" class="form-select" asp-items="ViewBag.Authors"></select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label">Category</label>
+            <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories"></select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label"></label>
+            <input asp-for="Price" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ISBN" class="form-label"></label>
+            <input asp-for="ISBN" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="PublicationYear" class="form-label"></label>
+            <input asp-for="PublicationYear" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Language" class="form-label"></label>
+            <input asp-for="Language" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Weight" class="form-label"></label>
+            <input asp-for="Weight" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Stock" class="form-label">Items in Stock</label>
+            <input asp-for="Stock" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label asp-for="CoverImageUrl" class="form-label"></label>
+            <input asp-for="CoverImageUrl" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="ManageBooks" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

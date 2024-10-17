@@ -1,0 +1,92 @@
+﻿@model BookShop.Models.Book
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Book Details";
+    double? averageRating = Model.Reviews?.Count > 0 ? (double?)Model.Reviews.Average(r => r.Rating) : null;
+}
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <img src="@Url.Content($"~/{Model.CoverImageUrl}")" class="img-thumbnail" alt="@Model.Title Cover" style="max-width: 250px; height: auto;" />
+    </div>
+    <div class="col-md-8">
+        <h2>@Model.Title</h2>
+        <p>
+            <strong>Author:</strong> @Model.Author.Name <br>
+            <strong>Category:</strong> @Model.Category.Name <br>
+            <strong>Price:</strong> @Model.Price.ToString("C", CultureInfo.GetCultureInfo("de-DE")) <br>
+            <strong>ISBN:</strong> @Model.ISBN <br>
+            <strong>Publication Year:</strong> @Model.PublicationYear <br>
+            <strong>Language:</strong> @Model.Language <br>
+            <strong>Weight:</strong> @Model.Weight g <br>
+            <strong>Rating:</strong> @(averageRating.HasValue ? $"{averageRating:F1}/5" : "No ratings") <br>
+            <strong>Description:</strong>
+        <p>@Model.Description</p>
+        </p>
+        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+            <input type="hidden" name="bookId" value="@Model.BookId" />
+            <div class="input-group mb-3">
+                <label for="quantity" class="input-group-text">Quantity:</label>
+                <input type="number" name="quantity" class="form-control" value="1" min="1" />
+                <button type="submit" class="btn btn-success">Add to Cart</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr>
+
+<div>
+    <h3>Reviews</h3>
+    @if (Model.Reviews.Any())
+    {
+        <div class="list-group">
+            @foreach (var review in Model.Reviews)
+            {
+                <div class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@UserManager.FindByIdAsync(review.UserId).Result.UserName</h5>
+                        <small>Rating: @review.Rating</small>
+                    </div>
+                    <p class="mb-1">@review.Content</p>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-muted">Be the first to write a review!</p>
+    }
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Write a review</h5>
+            <form asp-action="AddReview" method="post">
+                <input type="hidden" name="BookId" value="@Model.BookId" />
+                <div class="mb-3">
+                    <label for="Content" class="form-label">Review</label>
+                    <textarea name="Content" class="form-control"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="Rating" class="form-label">Rating</label>
+                    <input type="number" name="Rating" class="form-control" min="1" max="5" />
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="Add Review" class="btn btn-primary" />
+                </div>
+                @if (TempData["ReviewError"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["ReviewError"]
+                    </div>
+                }
+            </form>
+        </div>
+    </div>
+}

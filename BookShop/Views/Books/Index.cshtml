@@ -1,0 +1,64 @@
+﻿@model IEnumerable<BookShop.Models.Book>
+@using Microsoft.AspNetCore.Mvc.Rendering
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Books";
+}
+
+<h2 class="mb-3">Books</h2>
+
+<div class="search-area">
+    <form asp-controller="Books" asp-action="Index" method="get">
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">Title:</label>
+                <input type="text" class="form-control" name="searchString" value="@ViewData["CurrentFilter"]" placeholder="Search by title">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Category:</label>
+                <select class="form-select" name="categoryId" asp-items="ViewBag.Categories as SelectList">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Author:</label>
+                <select class="form-select" name="authorId" asp-items="ViewBag.Authors as SelectList">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Price Range:</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" name="minPrice" placeholder="Min">
+                    <span class="input-group-text">-</span>
+                    <input type="number" class="form-control" name="maxPrice" placeholder="Max">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var book in Model)
+    {
+        double? averageRating = book.Reviews?.Count > 0 ? (double?)book.Reviews.Average(r => r.Rating) : null;
+
+        <div class="col">
+            <div class="card h-100">
+                <img src="@book.CoverImageUrl" class="card-img-top" alt="Book Cover" style="height: 250px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">@book.Title</h5>
+                    <p class="card-text">@book.Author.Name</p>
+                    <small class="text-muted">Rating: @(averageRating.HasValue ? $"{averageRating:F1}/5" : "No ratings")</small>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Price: @book.Price.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</small>
+                    <a asp-action="Details" asp-route-id="@book.BookId" class="btn btn-primary float-end">View Details</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

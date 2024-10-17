@@ -1,0 +1,23 @@
+﻿@model ChangeUsernameViewModel
+
+@{
+    ViewData["Title"] = "Change Username";
+}
+
+<div class="container">
+    <h2 class="mt-3">@ViewData["Title"]</h2>
+
+    <form asp-action="ChangeUsername" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label asp-for="NewUsername"></label>
+                    <input asp-for="NewUsername" class="form-control" />
+                    <span asp-validation-for="NewUsername" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Username</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,51 @@
+﻿@model List<BookShop.Models.CartItem>
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Your Shopping Cart";
+}
+
+<div class="container mt-4">
+    <h2>Your Shopping Cart</h2>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info" role="alert">Your cart is empty.</div>
+    }
+    else
+    {
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Price.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</td>
+                        <td>@item.Quantity</td>
+                        <td>@((item.Price * item.Quantity).ToString("C", CultureInfo.GetCultureInfo("de-DE")))</td>
+                        <td>
+                            <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="bookId" value="@item.BookId" />
+                                <button type="submit" class="btn btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="text-end">
+            <h3>Total: @(Model.Sum(item => item.Price * item.Quantity).ToString("C", CultureInfo.GetCultureInfo("de-DE")))</h3>
+            <a asp-controller="Cart" asp-action="Checkout" class="btn btn-success">Proceed to Checkout</a>
+        </div>
+    }
+</div>

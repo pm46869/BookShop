@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BookShop.Models.Book>
+@using System.Globalization
+
+@{
+    ViewData["Title"] = "Manage Books";
+}
+
+<div class="container mt-4">
+    <h2>@ViewData["Title"]</h2>
+
+    <div class="mb-3">
+        <a asp-action="AddBook" class="btn btn-primary">Add New Book</a>
+    </div>
+
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in Model)
+            {
+                <tr>
+                    <td>@book.Title</td>
+                    <td>@book.Author.Name</td>
+                    <td>@book.Price.ToString("C", CultureInfo.GetCultureInfo("de-DE"))</td>
+                    <td>
+                        <a asp-action="EditBook" asp-route-id="@book.BookId" class="btn btn-secondary">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<BookShop.Models.Order>
+
+<h2 class="text-center mb-4">Order History</h2>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">
+                       Order ID
+                    </th>
+                    <th scope="col">
+                        <a href="?sortOrder=@ViewData["DateSortParam"]">Date</a>
+                    </th>
+                    <th scope="col">
+                        <a href="?sortOrder=@ViewData["StatusSortParam"]">Status</a>
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <th scope="row">@order.OrderId</th>
+                        <td>@order.OrderDate.ToString("G")</td>
+                        <td>@order.Status</td>
+                        <td>
+                            <a asp-action="OrderDetails" asp-route-id="@order.OrderId" class="btn btn-sm btn-info">Details</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-secondary" role="alert">
+        You have not placed any orders yet.
+    </div>
+}
